@@ -6,6 +6,7 @@ Web
 50
 ### Challenge Description
 You know what to do.
+
 ![Challenge Description with the link to the CTF](images/9-1.png "Challenge Description") 
 ### Link
 [http://ctf.d4rkc0de.iiitd.edu.in:56733/](http://ctf.d4rkc0de.iiitd.edu.in:56733/)  
@@ -83,7 +84,6 @@ A variety of spelling that uses numbers and symbols that approximate the shape o
 ### Flag
 d4rkc0de{y0u\_ar3\_a\_w3b\_insp3ct0r}
 
-# Web
 ## Ninjas
 ### Category
 Web
