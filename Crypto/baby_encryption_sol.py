@@ -1,4 +1,4 @@
-f = open("q.txt","r")
+f = open("q.txt", "r")
 for line in f:
     b = bytes.fromhex(line) #convert hex strings to byte strings for XORing
     for k in range(255):
