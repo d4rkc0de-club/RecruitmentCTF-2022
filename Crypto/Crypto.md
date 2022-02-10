@@ -128,7 +128,7 @@ Even though it is secure in itself because even the smallest key is 16 bits and 
 
 ---
 
-A random 16 bit key is being generated here and stored in a global variable called key. This is followed by three functions: `encrypt()`, `recieve()` and `get_flag()`.
+A random 16 bytes (128 bits) key is being generated here and stored in a global variable called key. This is followed by three functions: `encrypt()`, `recieve()` and `get_flag()`.
 
 The first intuitive thought is to bruteforce the key, but as mentioned above, the key is too large to be bruteforced. Hence, we inspect the code further to find hints:
 ```python
@@ -158,6 +158,79 @@ def get_flag():
         sys.stdout.flush()
 ```
 
-We observe something interesting! The KEY for both the `encrypt()` function and `get_flag()` function is same! This makes it easier for us to guess the key. Searching a bit about this on google tells us this is crib dragging.
+We observe something interesting! The KEY for both the `encrypt()` function and `get_flag()` function is same! This makes it easier for us to guess the key. Searching a bit about `"same key AES attacks"` led me to a few sources:
+- [A Stack Overflow answer](https://crypto.stackexchange.com/a/88495)
+- [A writeup from Swamp CTF](https://blog.h25.io/SwampCTF-AES/)
+
+Both of them tell us to decrypt some made-up ciphertexts to obtain the key. We hence `netcat` into the server to run the python script.
+
+---
+
+**Note: NetCat (`nc`)**
+
+`nc` is a useful terminal command that allows us to connect to a certain port on a certain server and recieve data from there. 
+
+In this case, `ctf.d4rkc0de.iiitd.edu.in` is the server and `20003` is the port we're connecting to. The python script given above is running on the given port number. 
+
+The difference between running the python script on our device and on the server is that the server has the real flag, while we do not have it.
+
+---
+
+We try selecting the decrypt option and enter something random. Maybe let's convert something like `"randomstring1234"` to hex in python, encrypt it in the program, and then pass it?
+
+```python
+>>> "randomstring1234".encode('utf-8').encode("hex")
+'72616e646f6d737472696e6731323334'
+```
+
+![The server being accessed through netcat on a terminal, and the tasks given above being executed](images/break_it1.png)
+
+We just get a message saying:
+`success ! Your message has been received`
+ Doesn't work. Let's inspect the python code again.
+
+ ```python
+ def receive():
+    text=input("give your ciphertext in hex : ")
+    ciphertext = bytes.fromhex(text)
+    if len(ciphertext) % 16 != 0:
+        print("Data length must be multiple of 16")
+        sys.stdout.flush()
+
+        return None
+
+    cipher = AES.new(KEY, AES.MODE_CBC, KEY)
+    decrypted = cipher.decrypt(ciphertext)
+
+    try:
+        decrypted.decode() # ensure plaintext is valid ascii
+    except UnicodeDecodeError:
+        print("Invalid plaintext: ",decrypted.hex())
+        sys.stdout.flush()
+        
+        return None
+
+    print("success ! Your message has been received")
+    sys.stdout.flush()
+```
+
+The script only prints the plaintext if it contains invalid ASCII characters. So we can try something random like `000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000` (96 0s)
+
+!["Netcat result from server showing the recieved plaintext"](images/break_it2.png)
+
+Voila! It works!
+
+Now, we just need to split the result into blocks and XOR them. We can write a script for this in python and hence obtain the key. We don't need to XOR with the cipher as `0 xor x = x`
+
+```python
+a = "0fbba8eb023955b63461be3997417945420e36d2861bdae6674e1f19d1bf091a420e36d2861bdae6674e1f19d1bf091a"
+a1 = a[:32]
+a2 = a[32:64]
+x = hex(int(a1, 16) ^ int(a2, 16))
+print(x)
+```
+We get `key = 4db59e3984228f50532fa12046fe705f`
+Entering this into the 3rd option of the python program gives the flag!
+
 ### Flag
 `d4rkc0de{s0_u_4r3_th3_A3S_g0d_31337}`
