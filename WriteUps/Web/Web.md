@@ -220,3 +220,35 @@ Oh wait, I see something called a “Secret\_Key”, this might be something.
 ![images/10-17.png](images/10-17.png)  
   
 Isn't this the flag format? Congratulations you have finally found the flag to the challenge and gained another 100 points!
+
+## Tinder
+### points: 200
+### description: Tinder in a CTF??? Something fundamental is wrong
+### link: [webpage](http://ctf.d4rkc0de.iiitd.edu.in:10003/), [page-source (may soon get invalidated)](http://ctf.d4rkc0de.iiitd.edu.in/files/1986d59b40c47f37c9b83278e6011c48/dz.zip?token=eyJ1c2VyX2lkIjoxNiwidGVhbV9pZCI6bnVsbCwiZmlsZV9pZCI6MjF9.YgVCHg.U5n2WVQYViptu-fDhl66INH1cUw)
+### exploit
+1. Open the webpage, doesn't look useful (in the sense you cannot make much out of it). Now download the source code and look at index.js (also available at `/Shenron`).
+2. It looks like we can execute code (our code) by passing them as form parameters. Also, flag.pug is just a misdirection, we must trigger the other else if statement to render the flag  
+  ```js
+  if (context.answer === "correct") {
+  res.render("flag");
+  }
+  else if(req.body.hide) {
+  ```
+3. Here we introduce an additional form parameter which will basically render whatever we ask for instead of Error Occured.  
+  ![image](https://user-images.githubusercontent.com/29653551/153454328-dca33e1f-f84c-4de2-bb6e-ae7dca03751c.png)  
+4. Also note from the source code that the first two parameters must be valid array indices.  
+  ```js
+  if (code.length <= 12 && code1.length <= 12 && code2.length
+  <= 35) {
+  try {
+  let context = {
+  pair: [
+  ["Goku", "Vegetta", "Krillin"],
+  ["Chi-Chi", "Bulma", "Videl"]
+  ],
+  ```
+5. For the purpose of getting the flag (which is located at /flag.txt, by reading the docker file), I passed the array indices as 1,2, and the third entry as require("fs") to create a file handling object (just nodejs things). Finally, to interact with the fs, use the hide parameter in the form (modify a POST request) to pass in `code=1&code1=2&code2=require("fs")&hide=pair[1][2].readFileSync("../../../flag.txt").toString()` as payload in post request  
+  ![image](https://user-images.githubusercontent.com/29653551/153454529-5c8cd820-7bfd-4b96-92a4-cda71369754e.png)  
+Hit send, and here we have our response
+
+### flag: d4rkc0de{Pr0t0_p0llut10n_1s_d4ng3rous} 
