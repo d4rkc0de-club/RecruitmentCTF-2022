@@ -32,7 +32,7 @@ Once there were 3 friends, each of them represent a number in the txt file.
 [encrypt.py](encrypt.py), [encrypted-messages.txt](encrypted-messages.txt)
 ### Explanation
 `encrypted-messages.txt` has 12 blocks of numbers, each with three numbers: `n`, `e`, `c`. 
-!["An image showing the different values of "n", "e" and "c" present in encrypted-messages.txt](images/encryption_101-1.png)
+![An image showing the different values of "n", "e" and "c" present in encrypted-messages.txt](Images/encryption_101-1.png)
 Interestingly enough, all the `e`'s are 3. If you search `"n, e and c in cryptography"` on Google, you'll soon realise that this challenge is using the **RSA Cipher**.
 
 ---
@@ -46,7 +46,7 @@ This was thought to be secure because it is difficult to factorise large numbers
 ---
 
 Now, let's try to understand the python script:
-!["An image showing the different values of "n", "e" and "c" present in encrypted-messages.txt](images/encryption_101-2.png)
+![An image showing the content of the python script](Images/encryption_101-2.png)
 
 ```python
 with open('flag.txt', 'rb') as f:
@@ -183,7 +183,7 @@ We try selecting the decrypt option and enter something random. Maybe let's conv
 '72616e646f6d737472696e6731323334'
 ```
 
-![The server being accessed through netcat on a terminal, and the tasks given above being executed](images/break_it1.png)
+![The server being accessed through netcat on a terminal, and the tasks given above being executed](Images/break_it1.png)
 
 We just get a message saying:
 `success ! Your message has been received`
@@ -216,7 +216,7 @@ We just get a message saying:
 
 The script only prints the plaintext if it contains invalid ASCII characters. So we can try something random like `000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000` (96 0s)
 
-!["Netcat result from server showing the recieved plaintext"](images/break_it2.png)
+!["Netcat result from server showing the recieved plaintext"](Images/break_it2.png)
 
 Voila! It works!
 
