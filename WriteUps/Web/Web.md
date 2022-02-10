@@ -224,7 +224,7 @@ Isn't this the flag format? Congratulations you have finally found the flag to t
 ## Tinder
 ### points: 200
 ### description: Tinder in a CTF??? Something fundamental is wrong
-### link: [webpage](http://ctf.d4rkc0de.iiitd.edu.in:10003/), [page-source (may soon get invalidated)](http://ctf.d4rkc0de.iiitd.edu.in/files/1986d59b40c47f37c9b83278e6011c48/dz.zip?token=eyJ1c2VyX2lkIjoxNiwidGVhbV9pZCI6bnVsbCwiZmlsZV9pZCI6MjF9.YgVCHg.U5n2WVQYViptu-fDhl66INH1cUw)
+### link: [webpage](http://ctf.d4rkc0de.iiitd.edu.in:10003/), [webpage-source](https://github.com/d4rkc0de-club/RecruitmentCTF-2022/blob/main/WriteUps/Web/dz.zip)
 ### exploit
 1. Open the webpage, doesn't look useful (in the sense you cannot make much out of it). Now download the source code and look at index.js (also available at `/Shenron`).
 2. It looks like we can execute code (our code) by passing them as form parameters. Also, flag.pug is just a misdirection, we must trigger the other else if statement to render the flag  
