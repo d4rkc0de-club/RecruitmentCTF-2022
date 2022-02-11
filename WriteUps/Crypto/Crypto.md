@@ -129,7 +129,7 @@ From the `import` statement, we get to know that this is an AES encryption.
 
 The Advanced Encryption Standard (AES) is a block cipher that finds its use in a lot of security operations. It is a symmetric operation, which means the same key is used to encrypt and decrypt the message. 
 
-Even though it is secure in itself because even the smallest key is 16 bits and cannot be brute-forced with modern hardware, some misconfigurations in a software can help us guess the key.
+Even though it is secure in itself because even the smallest key is 16 bytes and cannot be brute-forced with modern hardware, some misconfigurations in a software can help us guess the key.
 
 ---
 
