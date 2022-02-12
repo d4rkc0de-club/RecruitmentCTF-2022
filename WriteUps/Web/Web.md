@@ -91,6 +91,7 @@ Web
 82
 ### Challenge Description
 This ninja is very moody, and only talks a specific format.
+
 ![images/10-1.png](images/10-1.png)
 ### Link
 [http://ctf.d4rkc0de.iiitd.edu.in:56734](http://ctf.d4rkc0de.iiitd.edu.in:56734)
